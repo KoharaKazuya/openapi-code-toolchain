@@ -1,7 +1,14 @@
+import alias, { type RollupAliasOptions } from "@rollup/plugin-alias";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { dump as dumpYaml } from "js-yaml";
 import { createRequire } from "node:module";
-import { rollup, watch, type InputOptions, type OutputOptions } from "rollup";
+import {
+  rollup,
+  watch,
+  type InputOptions,
+  type OutputOptions,
+  type Plugin,
+} from "rollup";
 import esbuild from "rollup-plugin-esbuild";
 import sortKeys from "sort-keys";
 import "zx/globals";
@@ -36,6 +43,14 @@ export async function compile({
     input: "src/index.ts",
     plugins: [
       nodeResolve(),
+      (alias as unknown as (options?: RollupAliasOptions) => Plugin)({
+        entries: [
+          {
+            find: /^(#|@)\/(.*?)(\.ts)?$/i,
+            replacement: `${path.resolve(process.cwd(), "src")}/$2.ts`,
+          },
+        ],
+      }),
       esbuild(),
       openAPIDocumentFSInjection(),
       openAPIDocumentRefByImport(),
