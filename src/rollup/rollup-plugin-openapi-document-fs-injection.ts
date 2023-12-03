@@ -15,43 +15,55 @@ const pathsRoot = "src/paths";
 const webhooksRoot = "src/webhooks";
 const componentsRoot = "src/components";
 
-export default async function openAPIDocumentFSInjection(): Promise<Plugin> {
-  const pathsInjections = await parsePathsFromFS();
-  const webhooksInjections = await parseWebhooksFromFS();
-  const componentsInjections = await parseComponentsFromFS();
-
+export default function openAPIDocumentFSInjection(): Plugin {
   return {
     name: "openapi-document-fs-injection",
-    transform(code, id) {
-      const relativePath = path.relative(process.cwd(), id);
+    async transform(code, id) {
+      if (!isTarget(id)) return;
 
-      // OpenAPI Document の場合
-      if (relativePath === "src/index.ts") {
-        const ast = this.parse(code) as unknown as Program;
+      // `paths`, `webhooks`, `components` ディレクトリ以下のファイルの変更を監視するように
+      this.addWatchFile(pathsRoot);
+      this.addWatchFile(webhooksRoot);
+      this.addWatchFile(componentsRoot);
 
-        // `paths`, `webhooks`, `components` の import 文を挿入する
-        ast.body.unshift(
-          ...pathsInjections.imports,
-          ...webhooksInjections.imports,
-          ...componentsInjections.imports
-        );
+      // ファイルシステムから `paths`, `webhooks`, `components` の宣言を作成する
+      const [pathsInjections, webhooksInjections, componentsInjections] =
+        await Promise.all([
+          parsePathsFromFS(),
+          parseWebhooksFromFS(),
+          parseComponentsFromFS(),
+        ]);
 
-        // export を追加する
-        appendExport(
-          ast,
-          Object.fromEntries(
-            Object.entries({
-              paths: pathsInjections.object,
-              webhooks: webhooksInjections.object,
-              components: componentsInjections.object,
-            }).filter(([, value]) => value.properties.length > 0)
-          )
-        );
+      const ast = this.parse(code) as unknown as Program;
 
-        return { code: generate(ast) };
-      }
+      // `paths`, `webhooks`, `components` の import 文を挿入する
+      ast.body.unshift(
+        ...pathsInjections.imports,
+        ...webhooksInjections.imports,
+        ...componentsInjections.imports
+      );
+
+      // export を追加する
+      appendExport(
+        ast,
+        Object.fromEntries(
+          Object.entries({
+            paths: pathsInjections.object,
+            webhooks: webhooksInjections.object,
+            components: componentsInjections.object,
+          }).filter(([, value]) => value.properties.length > 0)
+        )
+      );
+
+      return { code: generate(ast) };
     },
   };
+}
+
+function isTarget(id: string): boolean {
+  const relativePath = path.relative(process.cwd(), id);
+  // OpenAPI Document のみ対象とする
+  return relativePath === "src/index.ts";
 }
 
 function createSimpleProperty(

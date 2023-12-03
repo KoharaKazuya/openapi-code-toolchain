@@ -1,8 +1,8 @@
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import typescript from "@rollup/plugin-typescript";
 import { dump as dumpYaml } from "js-yaml";
 import { createRequire } from "node:module";
 import { rollup, watch, type InputOptions, type OutputOptions } from "rollup";
+import esbuild from "rollup-plugin-esbuild";
 import sortKeys from "sort-keys";
 import "zx/globals";
 import openAPIDocumentFSInjection from "./rollup/rollup-plugin-openapi-document-fs-injection.js";
@@ -35,10 +35,10 @@ export async function compile({
     external: [/node_modules/],
     input: "src/index.ts",
     plugins: [
+      nodeResolve(),
+      esbuild(),
       openAPIDocumentFSInjection(),
       openAPIDocumentRefByImport(),
-      (typescript as any)(),
-      nodeResolve(),
     ],
     onwarn: (warning) => warn("Rollup warning", warning),
   };
@@ -88,15 +88,23 @@ export async function compile({
       });
 
       watcher.on("event", (event) => {
-        if (event.code === "BUNDLE_END") {
-          compile()
-            .then(() => {
-              info("Successfully compiled.");
-              onUpdate?.();
-            })
-            .catch((err) => {
-              warn("Failed to compile.", err);
-            });
+        switch (event.code) {
+          case "BUNDLE_END": {
+            compile()
+              .then(() => {
+                info("Successfully compiled.");
+                onUpdate?.();
+              })
+              .catch((err) => {
+                warn("Failed to compile.", err);
+              });
+            break;
+          }
+
+          case "ERROR": {
+            warn("Failed to compile.", event.error);
+            break;
+          }
         }
       });
 
