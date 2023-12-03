@@ -36,8 +36,7 @@ export function createServer({
     deepLinking: true,
     presets: [
       SwaggerUIBundle.presets.apis,
-      SwaggerUIStandalonePreset
-        .slice(1) // Remove TopBar plugin
+      SwaggerUIStandalonePreset,
     ],
     plugins: [
       SwaggerUIBundle.plugins.DownloadUrl,
@@ -65,6 +64,11 @@ export function createServer({
       }
     }
   }
+
+  // Hide TopBar component
+  const style = document.createElement('style');
+  style.innerHTML = '.topbar { display: none !important; }';
+  document.head.appendChild(style);
 };
 `);
   });
