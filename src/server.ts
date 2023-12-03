@@ -37,6 +37,7 @@ export function createServer({
     presets: [
       SwaggerUIBundle.presets.apis,
       SwaggerUIStandalonePreset
+        .slice(1) // Remove TopBar plugin
     ],
     plugins: [
       SwaggerUIBundle.plugins.DownloadUrl,
