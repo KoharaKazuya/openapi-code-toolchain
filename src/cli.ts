@@ -6,6 +6,7 @@ import { compile } from "./compiler.js";
 import { generate } from "./generator.js";
 import { createServer } from "./server.js";
 import { error, ok } from "./terminal.js";
+import { importDocument } from "./importer.js";
 
 (async () => {
   const check = "check" in argv;
@@ -40,6 +41,11 @@ import { error, ok } from "./terminal.js";
 
     case "generate": {
       await generate(...argv._.slice(1));
+      break;
+    }
+
+    case "import": {
+      await importDocument(argv._[1]);
       break;
     }
 
