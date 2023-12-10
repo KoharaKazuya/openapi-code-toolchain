@@ -43,6 +43,9 @@ export async function compile({
     input: "src/index.ts",
     plugins: [
       nodeResolve(),
+      esbuild(),
+      openAPIDocumentFSInjection(),
+      openAPIDocumentRefByImport(),
       (alias as unknown as (options?: RollupAliasOptions) => Plugin)({
         entries: [
           {
@@ -51,9 +54,6 @@ export async function compile({
           },
         ],
       }),
-      esbuild(),
-      openAPIDocumentFSInjection(),
-      openAPIDocumentRefByImport(),
     ],
     onwarn: (warning) => warn("Rollup warning", warning),
   };
