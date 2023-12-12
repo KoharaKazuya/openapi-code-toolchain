@@ -37,7 +37,7 @@ function parseDocument(document: OpenAPIV3_1.Document): OutputFiles {
   const { imports, code: object } = Document(rest);
   const code = `
     import { type OpenAPIV3_1, define } from "openapi-code/openapi/v3.1";
-    ${imports.join("\n")}
+    ${printImports(imports)}
 
     export default define<OpenAPIV3_1.Document>(${object});
   `;
@@ -60,7 +60,7 @@ function parsePaths(
       const { imports, code: object } = PathItem(value);
       const code = `
         import { type OpenAPIV3_1, define } from "openapi-code/openapi/v3.1";
-        ${imports.join("\n")}
+        ${printImports(imports)}
 
         export default define<OpenAPIV3_1.PathItemObject>(${object});
       `;
@@ -78,7 +78,7 @@ function parseWebhooks(
       const { imports, code: object } = PathItem(value);
       const code = `
         import { type OpenAPIV3_1, define } from "openapi-code/openapi/v3.1";
-        ${imports.join("\n")}
+        ${printImports(imports)}
 
         export default define<OpenAPIV3_1.PathItemObject>(${object});
       `;
@@ -99,7 +99,7 @@ function parseComponents(
           const { imports, code: object } = SecurityScheme(value as any);
           code = `
             import { type OpenAPIV3_1, nameReferable } from "openapi-code/openapi/v3.1";
-            ${imports.join("\n")}
+            ${printImports(imports)}
 
             export default nameReferable<OpenAPIV3_1.SecuritySchemeObject>(${object});
           `;
@@ -109,7 +109,7 @@ function parseComponents(
           ](value as any);
           code = `
             import { type OpenAPIV3_1, referable } from "openapi-code/openapi/v3.1";
-            ${imports.join("\n")}
+            ${printImports(imports)}
 
             export default referable<OpenAPIV3_1.${
               types[type as keyof typeof types]
@@ -121,6 +121,10 @@ function parseComponents(
       })
     )
   );
+}
+
+function printImports(imports: string[]): string {
+  return Array.from(new Set(imports)).join("\n");
 }
 
 type OutputProgram = {
@@ -275,7 +279,7 @@ function XML(xml: OpenAPIV3_1.XMLObject): OutputProgram {
 
 function Reference(reference: OpenAPIV3_1.ReferenceObject): OutputProgram {
   const name = reference.$ref.split("/").slice(-1)[0];
-  const dec = `import ${name} from ${codify(reference.$ref)}`;
+  const dec = `import ${name} from ${codify(reference.$ref)};`;
   return { imports: [dec], code: name };
 }
 
@@ -336,7 +340,7 @@ function SecurityRequirement(
   const codes = [];
 
   for (const [name, scopes] of Object.entries(securityRequirement)) {
-    imports.push(`import ${name} from "#/components/securitySchemes/${name}"`);
+    imports.push(`import ${name} from "#/components/securitySchemes/${name}";`);
     codes.push(`[${name}]: ${codify(scopes)}`);
   }
 
