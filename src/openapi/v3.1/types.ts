@@ -46,15 +46,14 @@
 // 指定できるように制限を追加する。(nameReferable を想定)
 
 declare const PLEASE_USE_REFERABLE_FUNCTION: unique symbol;
-export type TypedReferenceObject<T> = {
-  $ref: string;
+export type TypedReferenceObject<T> = OpenAPIV3_1.ReferenceObject & {
   [PLEASE_USE_REFERABLE_FUNCTION]: T;
 };
 export type TypedName<T> = string & {
   [PLEASE_USE_REFERABLE_FUNCTION]: T;
 };
 
-type Referable<T> = (TypedReferenceObject<T> & OpenAPIV3_1.ReferenceObject) | T;
+type Referable<T> = TypedReferenceObject<T> | T;
 
 /* tslint:disable:no-namespace no-empty-interface */
 export namespace OpenAPI {
