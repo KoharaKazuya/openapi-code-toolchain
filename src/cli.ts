@@ -45,6 +45,7 @@ import { importDocument } from "./importer.js";
     }
 
     case "import": {
+      if (argv._.length !== 2) throw new Error(`Specify a file to import.`);
       await importDocument(argv._[1]);
       break;
     }
