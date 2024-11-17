@@ -1,7 +1,6 @@
 import alias, { type RollupAliasOptions } from "@rollup/plugin-alias";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { dump as dumpYaml } from "js-yaml";
-import { createRequire } from "node:module";
 import {
   rollup,
   watch,
@@ -15,8 +14,6 @@ import "zx/globals";
 import openAPIDocumentFSInjection from "./rollup/rollup-plugin-openapi-document-fs-injection.js";
 import openAPIDocumentRefByImport from "./rollup/rollup-plugin-openapi-document-ref-by-import.js";
 import { info, warn } from "./terminal.js";
-
-const require = createRequire(import.meta.url);
 
 $.verbose = false;
 
@@ -86,7 +83,9 @@ export async function compile({
 
     let out = check ? checkTemp : outFile;
     await fs.writeFile(out, yaml);
-    await $`${require.resolve("openapi-format")} ${out} -o ${out}`;
+    await $({
+      stdio: ["pipe", "ignore", "ignore"],
+    })`npx --no-install -- openapi-format ${out} -o ${out}`;
 
     if (check)
       await $`diff -u ${outFile} ${checkTemp}`.catch((err) => {
