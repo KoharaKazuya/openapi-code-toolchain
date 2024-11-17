@@ -14,6 +14,6 @@ export default {
         "openapi-code/properly-ref-and-at-imports": "error",
         "openapi-code/referable-export-default-only": "error",
       },
-    } satisfies Linter.FlatConfig,
+    } satisfies Linter.Config,
   },
 } satisfies ESLint.Plugin;

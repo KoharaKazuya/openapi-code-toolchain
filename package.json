@@ -35,15 +35,15 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@hono/node-server": "^1.2.3",
+    "@hono/node-server": "^1.13.7",
     "@rollup/plugin-alias": "^5.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "chalk": "^5.3.0",
     "escodegen": "^2.1.0",
     "esquery": "^1.5.0",
     "globby": "^14.0.0",
-    "hono": "^3.10.2",
-    "inquirer": "^9.2.12",
+    "hono": "^4.6.10",
+    "inquirer": "^12.1.0",
     "inquirer-autocomplete-standalone": "^0.8.1",
     "js-yaml": "^4.1.0",
     "openapi-format": "^1.15.2",
@@ -51,19 +51,19 @@
     "rollup-plugin-esbuild": "^6.1.0",
     "sort-keys": "^5.0.0",
     "swagger-ui-dist": "^5.10.3",
-    "zx": "^7.2.3"
+    "zx": "^8.2.2"
   },
   "devDependencies": {
     "@types/escodegen": "^0.0.10",
-    "@types/eslint": "^8.44.7",
+    "@types/eslint": "^9.6.1",
     "@types/esquery": "^1.5.3",
     "@types/estree": "^1.0.5",
     "@types/inquirer": "^9.0.7",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^20.9.2",
-    "@typescript-eslint/typescript-estree": "^6.13.1",
-    "@typescript-eslint/utils": "^6.13.1",
-    "eslint": "^8.54.0",
+    "@types/node": "^22.9.0",
+    "@typescript-eslint/typescript-estree": "^8.14.0",
+    "@typescript-eslint/utils": "^8.14.0",
+    "eslint": "^9.15.0",
     "typescript": "^5.3.2"
   },
   "peerDependencies": {

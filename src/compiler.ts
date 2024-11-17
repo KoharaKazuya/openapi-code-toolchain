@@ -15,8 +15,6 @@ import openAPIDocumentFSInjection from "./rollup/rollup-plugin-openapi-document-
 import openAPIDocumentRefByImport from "./rollup/rollup-plugin-openapi-document-ref-by-import.js";
 import { info, warn } from "./terminal.js";
 
-$.verbose = false;
-
 const buildDir = "node_modules/.cache/openapi-code/build";
 const checkTemp = "node_modules/.cache/openapi-code/check-temp.yaml";
 

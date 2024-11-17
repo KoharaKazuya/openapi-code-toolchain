@@ -21,6 +21,7 @@ export default {
           for (const specifier of node.specifiers) {
             if (
               specifier.type === "ImportSpecifier" &&
+              specifier.imported.type === "Identifier" &&
               (defFuncNames as ReadonlyArray<string>).includes(
                 specifier.imported.name
               )
