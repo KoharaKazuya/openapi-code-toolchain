@@ -35,6 +35,9 @@ export async function compile({
   check?: boolean;
   onUpdate?: () => void;
 } = {}) {
+  const UnpluginTypia = // @ts-ignore
+    (await import("@ryoppippi/unplugin-typia/rollup").catch(() => {}))?.default;
+
   await fs.mkdir(buildDir, { recursive: true });
   await fs.writeJSON(path.join(buildDir, "package.json"), { type: "module" });
 
@@ -42,6 +45,7 @@ export async function compile({
     external: [/node_modules/],
     input: "src/index.ts",
     plugins: [
+      UnpluginTypia?.({ log: false }),
       nodeResolve(),
       esbuild(),
       openAPIDocumentFSInjection(),
@@ -55,7 +59,14 @@ export async function compile({
         ],
       }),
     ],
-    onwarn: (warning) => warn("Rollup warning", warning),
+    onwarn: (warning) => {
+      if (
+        warning.code === "UNUSED_EXTERNAL_IMPORT" &&
+        warning.exporter === "typia"
+      )
+        return;
+      warn("Rollup warning", warning);
+    },
   };
   const outputOptions: OutputOptions = {
     dir: buildDir,
