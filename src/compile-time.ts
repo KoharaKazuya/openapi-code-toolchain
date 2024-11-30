@@ -3,9 +3,9 @@ import type {
   TypedReferenceObject,
 } from "./openapi/v3.1/types.js";
 
-export function print(schema: object, override: object) {
+export function print(schema: object, override: object): string {
   const obj = Document({ ...schema, ...override } as any);
-  process.stdout.write(JSON.stringify(obj));
+  return JSON.stringify(obj);
 }
 
 function Document(document: OpenAPIV3_1.Document): OpenAPIV3_1.Document {

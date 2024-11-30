@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - 依存する外部パッケージ (コマンド) の構造が変わってもエラーにならないようにする
+- コード中に `console.log` などで標準出力に書き込むコードを含めたときにエラー問題を修正する
 
 ## [0.2.2] - 2023-12-12
 

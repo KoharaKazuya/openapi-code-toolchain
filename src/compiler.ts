@@ -17,6 +17,7 @@ import { info, warn } from "./terminal.js";
 
 const buildDir = "node_modules/.cache/openapi-code/build";
 const checkTemp = "node_modules/.cache/openapi-code/check-temp.yaml";
+const compiledJson = "node_modules/.cache/openapi-code/compiled.json";
 
 export async function compile({
   outFile = "openapi.yaml",
@@ -70,12 +71,14 @@ export async function compile({
 
   const compile = async () => {
     const script = `
+      import fs from "node:fs";
       import { print } from "openapi-code/compile-time";
       import { default as schema, __rollup_plugin_openapi_document_fs_injection_export as override } from "./${buildDir}/index.js";
-      print(schema, override);
+      const json = print(schema, override);
+      fs.writeFileSync("${compiledJson}", json);
     `;
-    const json = String(await $`node --input-type=module --eval ${script}`);
-    const doc = JSON.parse(json);
+    await $({ stdio: "inherit" })`node --input-type=module --eval ${script}`;
+    const doc = await fs.readJSON(compiledJson);
     const sorted = sortKeys(doc, { deep: true });
     const yaml = dumpYaml(sorted);
 
