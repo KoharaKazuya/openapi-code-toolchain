@@ -8,6 +8,7 @@ import path from "node:path";
  * 1. src/index.ts は `export default define<OpenAPIV3_1.Document>(…)` を含める
  * 2. src/paths/ と src/webhooks/ 以下のファイルは `export default define<OpenAPIV3_1.PathItemObject>(…)` を含める
  * 3. src/components/<type>/ 以下のファイルは `export default referable<OpenAPIV3_1.<type>>(…)` を含める
+ *    - schema の場合は OpenAPIV3_1.SchemaObject の代わりに TypiaSchema でも良い (Typia サポート)
  * 4. src/components/securitySchemes/ 以下のファイルは `export default nameReferable<OpenAPIV3_1.SecuritySchemeObject>(…)` を含める
  */
 export default ESLintUtils.RuleCreator.withoutDocs({
@@ -139,11 +140,13 @@ function createConvention(path: string): Convention | undefined {
           node.callee.name === "referable" &&
           node.typeArguments?.params.length === 1 &&
           node.typeArguments.params[0].type === "TSTypeReference" &&
-          node.typeArguments.params[0].typeName.type === "TSQualifiedName" &&
-          node.typeArguments.params[0].typeName.left.type === "Identifier" &&
-          node.typeArguments.params[0].typeName.left.name === "OpenAPIV3_1" &&
-          node.typeArguments.params[0].typeName.right.type === "Identifier" &&
-          node.typeArguments.params[0].typeName.right.name === defType
+          ((node.typeArguments.params[0].typeName.type === "TSQualifiedName" &&
+            node.typeArguments.params[0].typeName.left.type === "Identifier" &&
+            node.typeArguments.params[0].typeName.left.name === "OpenAPIV3_1" &&
+            node.typeArguments.params[0].typeName.right.type === "Identifier" &&
+            node.typeArguments.params[0].typeName.right.name === defType) ||
+            (node.typeArguments.params[0].typeName.type === "Identifier" &&
+              node.typeArguments.params[0].typeName.name === "TypiaSchema"))
         );
       },
     };
