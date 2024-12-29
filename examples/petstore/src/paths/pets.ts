@@ -1,6 +1,6 @@
-import { type OpenAPIV3_1, define } from "openapi-code/openapi/v3.1";
 import Error from "#/components/schemas/Error";
 import Pets from "#/components/schemas/Pets";
+import { type OpenAPIV3_1, define } from "openapi-code/openapi/v3.1";
 
 export default define<OpenAPIV3_1.PathItemObject>({
   get: {
@@ -12,7 +12,6 @@ export default define<OpenAPIV3_1.PathItemObject>({
         name: "limit",
         in: "query",
         description: "How many items to return at one time (max 100)",
-        optional: true,
         schema: {
           type: "integer",
           maximum: 100,
@@ -26,7 +25,6 @@ export default define<OpenAPIV3_1.PathItemObject>({
         headers: {
           "x-next": {
             description: "A link to the next page of responses",
-            optional: true,
             schema: {
               type: "string",
             },

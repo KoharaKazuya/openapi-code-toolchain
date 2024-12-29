@@ -11,4 +11,5 @@ export default referable<OpenAPIV3_1.SchemaObject>({
       type: "string",
     },
   },
+  required: ["code", "message"],
 });

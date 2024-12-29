@@ -12,6 +12,7 @@ export default define<OpenAPIV3_1.PathItemObject>({
         name: "petId",
         in: "path",
         description: "The id of the pet to retrieve",
+        required: true,
         schema: {
           type: "string",
         },

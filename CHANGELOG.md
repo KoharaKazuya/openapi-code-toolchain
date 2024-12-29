@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - import コマンドで引数が足りなかったときのエラーメッセージをわかりやすくする
 - 依存パッケージのバージョンを更新する
 
+### Removed
+
+- 一般的なミス (required の指定忘れ) 防止のための optional プロパティ指定を強制する機能を削除 (代わりに Typia で TypeScript の型定義を使用してください)
+
 ### Fixed
 
 - 依存する外部パッケージ (コマンド) の構造が変わってもエラーにならないようにする

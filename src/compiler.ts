@@ -72,9 +72,8 @@ export async function compile({
   const compile = async () => {
     const script = `
       import fs from "node:fs";
-      import { print } from "openapi-code/compile-time";
       import { default as schema, __rollup_plugin_openapi_document_fs_injection_export as override } from "./${buildDir}/index.js";
-      const json = print(schema, override);
+      const json = JSON.stringify({ ...schema, ...override });
       fs.writeFileSync("${compiledJson}", json);
     `;
     await $({ stdio: "inherit" })`node --input-type=module --eval ${script}`;

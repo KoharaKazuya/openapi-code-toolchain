@@ -14,5 +14,5 @@ export default referable<OpenAPIV3_1.SchemaObject>({
       type: "string",
     },
   },
-  optional: ["tag"],
+  required: ["id", "name"],
 });

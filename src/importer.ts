@@ -1,8 +1,8 @@
-import type { OpenAPIV3_1 } from "./openapi/v3.1/types.js";
+import { load as loadYaml } from "js-yaml";
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
-import { load as loadYaml } from "js-yaml";
+import type { OpenAPIV3_1 } from "./openapi/v3.1/types.js";
 
 export async function importDocument(target: string): Promise<void> {
   // src/ ディレクトリを作成する
@@ -238,9 +238,7 @@ function Header(header: OpenAPIV3_1.HeaderObject): OutputProgram {
 function ParameterBase(
   parameterBase: OpenAPIV3_1.ParameterBaseObject
 ): OutputProgram {
-  const { required, ...rest } = parameterBase;
-  const req = required ? {} : { optional: true };
-  return convertObject({ ...rest, ...req } as any, {
+  return convertObject(parameterBase, {
     schema: OrReference(Schema),
     examples: (examples) => convertRecord(examples, OrReference(Example)),
     content: (content) => convertRecord(content, MediaType),
@@ -248,11 +246,7 @@ function ParameterBase(
 }
 
 function Schema(schema: OpenAPIV3_1.SchemaObject): OutputProgram {
-  const { required = [], ...rest } = schema;
-  const keys = Object.keys(rest.properties || {});
-  const optional = keys.filter((key) => !(required as unknown[]).includes(key));
-  const opt = optional && optional.length > 0 ? { optional } : {};
-  return convertObject({ ...rest, ...opt } as any, {
+  return convertObject(schema, {
     items: OrReference(Schema),
     properties: (properties) => convertRecord(properties, OrReference(Schema)),
     additionalProperties: OrReference(Schema),
@@ -304,9 +298,7 @@ function Encoding(encoding: OpenAPIV3_1.EncodingObject): OutputProgram {
 function RequestBody(
   requestBody: OpenAPIV3_1.RequestBodyObject
 ): OutputProgram {
-  const { required, ...rest } = requestBody;
-  const opt = required ? {} : { optional: true };
-  return convertObject({ ...rest, ...opt } as any, {
+  return convertObject(requestBody, {
     content: (content) => convertRecord(content, MediaType),
   });
 }

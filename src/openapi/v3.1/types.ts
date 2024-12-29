@@ -28,14 +28,6 @@
 //
 // 交差型をやめ、Modify を使って適切に定義するよう変更する。
 //
-// また、一部の型のプロパティで required の代わりに optional を指定するように変更する。
-// これは required の指定を忘れたときに想定外にすべてが optional になる問題が頻発するので
-// それを防ぐため。変更する型は以下の通り。
-//
-// - SchemaObject
-// - ParameterObject
-// - RequestBodyObject
-//
 // また、Document のプロパティから `paths` `webhooks` `components` を削除。
 // OpenAPI Code のコンパイラが自動実装するため。
 //
@@ -433,9 +425,7 @@ export namespace OpenAPIV3 {
 
   export interface ParameterBaseObject {
     description?: string;
-    /** @deprecated [OpenAPI Code] 代わりに optional を使用してください */
-    required?: never;
-    optional?: boolean;
+    required?: boolean;
     deprecated?: boolean;
     allowEmptyValue?: boolean;
     style?: string;
@@ -484,9 +474,7 @@ export namespace OpenAPIV3 {
     uniqueItems?: boolean;
     maxProperties?: number;
     minProperties?: number;
-    /** @deprecated [OpenAPI Code] 代わりに optional を使用してください */
-    required?: never;
-    optional?: string[];
+    required?: string[];
     enum?: any[];
     properties?: {
       [name: string]: Referable<SchemaObject>;
@@ -549,9 +537,7 @@ export namespace OpenAPIV3 {
   export interface RequestBodyObject {
     description?: string;
     content: { [media: string]: MediaTypeObject };
-    /** @deprecated [OpenAPI Code] 代わりに optional を使用してください */
-    required?: never;
-    optional?: boolean;
+    required?: boolean;
   }
 
   export interface ResponsesObject {
@@ -958,9 +944,7 @@ export interface IJsonSchema {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  /** @deprecated [OpenAPI Code] 代わりに optional を使用してください */
-  required?: never;
-  optional?: string[];
+  required?: string[];
   additionalProperties?: boolean | IJsonSchema;
   definitions?: {
     [name: string]: IJsonSchema;

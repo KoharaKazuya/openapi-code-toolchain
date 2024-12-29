@@ -19,9 +19,6 @@
       "default": "./lib/openapi/v3.1/index.js",
       "types": "./lib/openapi/v3.1/index.d.ts"
     },
-    "./compile-time": {
-      "default": "./lib/compile-time.js"
-    },
     "./eslint": {
       "default": "./lib/eslint/index.js",
       "types": "./lib/eslint/index.d.ts"
