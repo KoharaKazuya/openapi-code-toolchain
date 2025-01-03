@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - 一般的なミス (required の指定忘れ) 防止のための optional プロパティ指定を強制する機能を削除 (代わりに Typia で TypeScript の型定義を使用してください)
+- generate コマンドを削除 (Scaffdog などのツールを使用してください)
 
 ### Fixed
 

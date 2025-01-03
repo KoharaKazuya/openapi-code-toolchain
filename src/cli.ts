@@ -3,10 +3,9 @@
 import chalk from "chalk";
 import "zx/globals";
 import { compile } from "./compiler.js";
-import { generate } from "./generator.js";
+import { importDocument } from "./importer.js";
 import { createServer } from "./server.js";
 import { error, ok } from "./terminal.js";
-import { importDocument } from "./importer.js";
 
 (async () => {
   const check = "check" in argv;
@@ -36,11 +35,6 @@ import { importDocument } from "./importer.js";
 
       await compile({ mode: "watch", check, onUpdate });
 
-      break;
-    }
-
-    case "generate": {
-      await generate(...argv._.slice(1));
       break;
     }
 
