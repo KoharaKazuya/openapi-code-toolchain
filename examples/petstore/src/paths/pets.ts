@@ -1,6 +1,6 @@
+import { type OpenAPIV3_1, define } from "openapi-code/openapi/v3.1";
 import Error from "#/components/schemas/Error";
 import Pets from "#/components/schemas/Pets";
-import { type OpenAPIV3_1, define } from "openapi-code/openapi/v3.1";
 
 export default define<OpenAPIV3_1.PathItemObject>({
   get: {

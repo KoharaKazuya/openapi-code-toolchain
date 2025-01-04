@@ -7,5 +7,5 @@ type Error = {
 };
 
 export default referable<TypiaSchema>(
-  typia.json.schemas<[Error], "3.1">().components.schemas!.Error
+  typia.json.schemas<[Error], "3.1">().components.schemas!.Error,
 );

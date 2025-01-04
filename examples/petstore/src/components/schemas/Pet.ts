@@ -8,5 +8,5 @@ type Pet = {
 };
 
 export default referable<TypiaSchema>(
-  typia.json.schemas<[Pet], "3.1">().components.schemas!.Pet
+  typia.json.schemas<[Pet], "3.1">().components.schemas!.Pet,
 );
