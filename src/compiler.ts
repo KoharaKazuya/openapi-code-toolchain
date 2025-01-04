@@ -9,7 +9,6 @@ import {
   type Plugin,
 } from "rollup";
 import esbuild from "rollup-plugin-esbuild";
-import sortKeys from "sort-keys";
 import "zx/globals";
 import openAPIDocumentFSInjection from "./rollup/rollup-plugin-openapi-document-fs-injection.js";
 import openAPIDocumentRefByImport from "./rollup/rollup-plugin-openapi-document-ref-by-import.js";
@@ -78,8 +77,7 @@ export async function compile({
     `;
     await $({ stdio: "inherit" })`node --input-type=module --eval ${script}`;
     const doc = await fs.readJSON(compiledJson);
-    const sorted = sortKeys(doc, { deep: true });
-    const yaml = dumpYaml(sorted);
+    const yaml = dumpYaml(doc);
 
     let out = check ? checkTemp : outFile;
     await fs.writeFile(out, yaml);

@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "openapi-code",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Toolchain for OpenAPI document as code",
   "keywords": [
     "openapi"
@@ -44,7 +44,6 @@
     "openapi-format": "^1.15.2",
     "rollup": "^4.5.0",
     "rollup-plugin-esbuild": "^6.1.0",
-    "sort-keys": "^5.0.0",
     "swagger-ui-dist": "^5.10.3",
     "zx": "^8.2.2"
   },
