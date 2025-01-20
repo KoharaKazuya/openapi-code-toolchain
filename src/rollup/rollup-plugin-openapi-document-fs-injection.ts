@@ -113,6 +113,7 @@ async function parsePathsFromFS(): Promise<{
         .replace(/\.ts$/, "")
         .replace(/index$/, "")
   );
+  paths.sort();
 
   const imports: ImportDeclaration[] = [];
   const object: ObjectExpression = {
@@ -141,6 +142,7 @@ async function parseWebhooksFromFS(): Promise<{
   const names = files.map((f) =>
     path.relative(webhooksRoot, f).replace(/\.ts$/, "")
   );
+  names.sort();
 
   const imports: ImportDeclaration[] = [];
   const object: ObjectExpression = {
@@ -169,6 +171,7 @@ async function parseComponentsFromFS(): Promise<{
   const paths = files.map(
     (f) => "/" + path.relative(componentsRoot, f).replace(/\.ts$/, "")
   );
+  paths.sort();
 
   // パスが指すオブジェクト (の AST) にアクセスしやすくするため、参照を保存しておく
   const pointers = new Map<string, ObjectExpression>();

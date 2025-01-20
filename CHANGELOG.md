@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - examples/ 以下のファイルをフォーマッター処理済みにする
+- paths, webhooks, components 以下の並びがビルドのたびにランダムに変わる問題を修正する
 
 ## [0.4.0] - 2025-01-04
 
